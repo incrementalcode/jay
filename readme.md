@@ -16,6 +16,14 @@ does not itself contain:
 	- Customizable (& Functional) Iteration
 	- Concurrency
 	
+Documentation
+-------------
+
+See the QuickStart file for a concise overview of the functionality and API of the Jay framework.
+
+A more lengthy guide is also available which goes into more detail about the understanding and benefits of the framework,
+but I probably haven't included that in this release yet, feel free to contact me about it.
+
 
 Design Philosophy
 -----------------
@@ -40,15 +48,6 @@ or to force impositions that limit flexibility.
 
 It also means that the library is easier to learn and understand.
 After all, "power" is a factor of functionality *and ease*.
-
-
-Documentation
--------------
-
-See the QuickStart file for a concise overview of the functionality and API of the Jay framework.
-
-A more lengthy guide is also available which goes into more detail about the understanding and benefits of the framework,
-but I probably haven't included that in this release yet, feel free to contact me about it.
 
 
 Defining Objects
