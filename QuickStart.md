@@ -43,10 +43,14 @@ Jay Quick Start
 	
 
 	var Person = type(Object, {
+		
 		constructor: function(name) {
 			this.name = name;
 		}
+		
 	});
+
+	// isn't this just beautiful syntax?? it's very minimalistic as well and provides a simple conceptualization.
 
 	var Girl = type(Person, function() {
 	
