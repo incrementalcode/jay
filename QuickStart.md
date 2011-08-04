@@ -3,37 +3,69 @@ Jay Quick Start
 
 ## Object Manipulation
 
-1) `create` : a new object will be created which inherits directly from parentObject.
+1) `create(parentObject)` : a new object will be created which inherits directly from parentObject.
 
-	Object.create(parentObject);
+	Object.create({ type: 'Animal' });
 
-2) `overlay` : the properties of overlayObject will be overlaid on top of actualObject. Only the properties directly on overlayObject will be used, overlayDeep can be used instead to include inherited properties of overlayObject.
+2) `overlay(ontoObject, overlayObject)` : the properties of overlayObject will be overlaid on top of actualObject. Only the properties directly on overlayObject will be used, overlayDeep can be used instead to include inherited properties of overlayObject.
 
-	overlay(actualObject, overlayObject);
-	overlayDeep(actualObject, overlayObject);
+	overlay(obj, {
+		organization: 'ngspinners'
+	});
+
+	overlayDeep(obj, {});
 
 3) `underlay` : the properties of underlayObject will be copied onto actualObject, only if the properties do not already exist on actualObject.
 
-	underlay(actualObject, underlayObject);
+	underlay(String.prototype, {
+		contains: function() { return false; }
+	});
 
-4) `customize` : definitionFunc is a function that will be executed with actualObject as it's context object (assigned to `this`). An overlayObject can also be accepted instead of a definitionFunc in which it acts the same as `overlay`.
+4) `customize(customizeObject, definitionFunc | overlayObject)` : A more general version of mixins. definitionFunc is a function that will be executed with actualObject as it's context object (assigned to `this`). An overlayObject can also be accepted instead of a definitionFunc in which it acts the same as `overlay`.
 
-	customize(actualObject, definitionFunc);
-	customize(actualObject, overlayObject);
+	var tim = customize({}, function() {
+		this.name = "Tim";
+	});
 	
-5) `specialize` : this is a combination of `create` and `customize`, so a new object is created which inherits from parentObject, and has the given customization run on it.
+	tim = customize({}, {
+		name: "Tim"
+	});
+	
+5) `specialize(parentObject, definitionFunc | definitionOverlay)` : this is a combination of `create` and `customize`, so a new object is created which inherits from parentObject, and has the given customization run on it.
 
-	specialize(parentObject, definition);
+	var tim = specialize(Object.prototype, function() {
+		this.name = "Tim"
+	});
 	
 ## Type Definition
 
-1) `type` : creates and returns a new type that has prototypal inheritance from parentConstructor, the prototype is customized using prototypeCustomization which is sent to `specialize`. The prototype definition should specify a constructor property, otherwise a default constructor will be created. Types are represented by their constructor, which is returned by `type`. The action of creating a type can be called prototyping, and `prototype` can be used an alias of `type`.
+1) `type(parentConstructor, protoypeCustomization)` : creates and returns a new type that has prototypal inheritance from parentConstructor, the prototype is customized using prototypeCustomization which is sent to `specialize`. The prototype definition should specify a constructor property, otherwise a default constructor will be created. Types are represented by their constructor, which is returned by `type`. The action of creating a type can be called prototyping, and `prototype` can be used an alias of `type`.
 	
-	type(parentConstructor, prototypeCustomization);
-	
-2) `constructor` : as a shortcut when no customization need to take place on the new prototype, the childConstructor can be specified directly in a call to `constructor`, which just forwards to `type`. This is useful if all you need to do is setup the type heirarchy, which will be done in this call.
 
-	constructor(parentConstructor, childConstructor);
+	var Person = type(Object, {
+		constructor: function(name) {
+			this.name = name;
+		}
+	});
+
+	var Girl = type(Person, function() {
+	
+		this.constructor = function(name, weight) {
+			Person.call(this, name);
+
+			this.weight = weight + 10;
+		}
+		
+		this.eat = function() {
+			this.weight += 10;
+		}
+	})
+	
+2) `constructor(parentConstructor, childConstructor)` : as a shortcut when no customization needs to take place on the new prototype, the childConstructor can be specified directly in a call to `constructor`, which just forwards to `type`. This is useful if all you need to do is setup the type heirarchy, which will be done in this call.
+
+	var Person = constructor(Object, function(name) {
+		this.name = name;
+	});
 	
 ## Type Checking
 
