@@ -94,76 +94,76 @@ Jay brings the prototypal nature of Javascript to the fore-front of the language
 defining a type is done through the action of prototyping. This is the nature of the language,
 the type system is powered by prototypes, and the type is represented by the constructor of the prototype.
 
-	- NewType = type(ParentType, definition)
+`NewType = type(ParentType, definition)`
 	
-		var Person = type(Mammal, function() {
-			this.constructor = function(name) {
-				this.name = name
-			}
-			this.talk = function() {
-				alert("My name is " + name)
-			}
-		})
+	var Person = type(Mammal, function() {
+		this.constructor = function(name) {
+			this.name = name
+		}
+		this.talk = function() {
+			alert("My name is " + name)
+		}
+	})
 	
 A shortcut if you only want to specify the constructor function:
 
-	- NewType = constructor(ParentType, constructorFunction)
+`NewType = constructor(ParentType, constructorFunction)`
 		
-		var Person = constructor(Mammal, function(name) {
-			this.name = name
-		})
+	var Person = constructor(Mammal, function(name) {
+		this.name = name
+	})
 
 Type Checking
 -------------
 
 Jay makes significant changes to Javascript's type checking mechanisms that overcome several design errors and extend the power of type checking.
 
-Characteristics:
+### Characteristics:
 
-	Three "void" types, the two sub types are mutually exclusive.
+Three "void" types, the two sub types are mutually exclusive.
 
-		- isVoid(value)
+	- isVoid(value)
 
-		- isUndefined(value)
+	- isUndefined(value)
 
-		- isNull(value)
+	- isNull(value)
 
-	An "object" type is anything that is not void. All "object" values inherit from Object.prototype.
+An "object" type is anything that is not void. All "object" values inherit from Object.prototype.
 
-		- isObject(value)
+	- isObject(value)
 
-	A primitive value is one that cannot have new properties set on it, but they still inherit from their base types.
-	An instance value is the opposite, one that can have new properties set on it.
+A primitive value is one that cannot have new properties set on it, but they still inherit from their base types.
+An instance value is the opposite, one that can have new properties set on it.
 
-		- isPrimitive(value)
+	- isPrimitive(value)
 
-		- isInstance(value)
+	- isInstance(value)
 
 
-Type Heirarchies:
+### Type Heirarchies:
 
-	You can determine the exact type (constructor) of a value. If it is a void value, then the actual value (either undefined or null) is returned instead of a constructor. 
-	This is very useful for checking the exact type.
+You can determine the exact type (constructor) of a value. If it is a void value, then the actual value (either undefined or null) is returned instead of a constructor. 
+This is very useful for checking the exact type.
+
+	- Constructor = typeOf(value)
+
+You can check if a value inherits from or is a certain a type, do not try use a void value as a constructor though.
+
+	- istypeof(value, Constructor)
 	
-		- Constructor = typeOf(value)
+You can check that a value is primitive and inherits from or is a certain type, likewise for whether it is an instance and not a primitive.
 
-	You can check if a value inherits from or is a certain a type, do not try use a void value as a constructor though.
+	- isprimitiveof(value, Constructor)
 	
-		- istypeof(value, Constructor)
-		
-	You can check that a value is primitive and inherits from or is a certain type, likewise for whether it is an instance and not a primitive.
+	- isinstanceof(value, Constructor)
 	
-		- isprimitiveof(value, Constructor)
-		
-		- isinstanceof(value, Constructor)
-		
-	You can check whether a value inherits from an arbitrary value, as opposed to checking that it inherits from a type.
-	
-		- isheirof(value, parentValue)
-	
-	You can check whether an value provides all the methods that are defined on a type's prototype, regardless of whether there is inheritance.
-	 
-	 - isimplementationof(value, Constructor)
+You can check whether a value inherits from an arbitrary value, as opposed to checking that it inherits from a type.
+
+	- isheirof(value, parentValue)
+
+You can check whether an value provides all the methods that are defined on a type's prototype, regardless of whether there is inheritance.
+ 
+	- isimplementationof(value, Constructor)
 	
 	
 Namespacing
@@ -212,15 +212,15 @@ Iteration
 Using the foreach() function you can iterate over any type of object when you would have previously had to use different iteration constructs depending on the object type.
 Customizable iteration (by overriding each()) will be used by the foreach() function.
 
-- foreach(object, iterationFunc)
+	foreach(object, iterationFunc)
 
 There are some useful iterators provided such as range() which dynamically iterates over a range instead of pre-computing the whole set.
 
-- range(from, to, step)
+	range(from, to, step)
 
 Functional programming techniques like comprehensions / mapping etc are supported by combining a collector() function and foreach().
 
-- collector(func)
+	collector(func)
 
 	var doubles = foreach (arr, collector(function(el) { return el * 2; }))
 
